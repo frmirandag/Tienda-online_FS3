@@ -21,7 +21,7 @@ public class SecurityConfig {
     private CustomAuthenticationEntryPoint customAuthenticationEntryPoint; // Inyectar el manejador de 401
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable()) // Deshabilitar CSRF para facilitar pruebas
                 .authorizeHttpRequests(auth -> auth
@@ -40,7 +40,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AccessDeniedHandler accessDeniedHandler() {
+    AccessDeniedHandler accessDeniedHandler() {
         return (request, response, accessDeniedException) -> {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             response.getWriter().write("Acceso denegado: No tienes permisos para realizar esta operación.");
@@ -49,7 +49,7 @@ public class SecurityConfig {
 
     // Definir usuarios en memoria con sus respectivos roles
     @Bean
-    public UserDetailsService userDetailsService() {
+    UserDetailsService userDetailsService() {
         UserDetails user = User.builder()
                 .username("user")
                 .password("{noop}user123") // No se codifica la contraseña para facilitar pruebas
